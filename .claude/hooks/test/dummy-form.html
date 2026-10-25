@@ -1,0 +1,10 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Submit guard test</title>
+<h1>Dummy application</h1>
+<form onsubmit="document.getElementById('out').textContent = 'SUBMITTED'; return false;">
+  <label>Name <input name="name"></label>
+  <button type="button" onclick="document.getElementById('out').textContent = 'next page'">Next</button>
+  <button type="submit">Submit application</button>
+</form>
+<p id="out">not submitted</p>
