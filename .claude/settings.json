@@ -37,12 +37,6 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/clear-nudge.sh\"",
             "shell": "bash",
             "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/submit-guard.js\"",
-            "shell": "bash",
-            "timeout": 10
           }
         ]
       }
@@ -55,19 +49,6 @@
             "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/sync-push.sh\"",
             "shell": "bash",
             "timeout": 60
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "mcp__claude-in-chrome__.*|mcp__Claude_Browser__.*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/submit-guard.js\"",
-            "shell": "bash",
-            "timeout": 10
           }
         ]
       }

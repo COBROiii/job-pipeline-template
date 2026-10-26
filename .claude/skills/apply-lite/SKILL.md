@@ -11,6 +11,7 @@ Job links (and any pasted questions): `$ARGUMENTS`
 Follow the rules in `CLAUDE.md`. Run `git pull --rebase` first. Keep context small: do this yourself, without subagents, and don't read other applications.
 
 For each link:
+0. **Check local files first.** If `applications/jobs/<id>/` already has `posting.md`, `questions.md` (`Status: COMPLETE`) or `answers.md`, reuse them and skip those steps; say which. A PARTIAL or BLOCKED `questions.md`: show the user what it's waiting on, then read only the unread steps.
 1. **Fit, one line.** Read the ad once (WebFetch), save it to `applications/jobs/<id>/posting.md`, add/find the tracker row. Score fit with the evaluator's fit table in your head and write `<score> <grade>` in the tracker. Under 60/100 (or any hard ineligibility): give the heavy warning from `.claude/skills/draft/SKILL.md` step 1 and wait; never skip it. 75+ is worth suggesting `/apply` instead.
 2. **Questions.** Use pasted questions if given. Otherwise read the form once as text (`get_page_text`, no screenshots). Login wall or CAPTCHA: stop and ask the user. Save to `questions.md`.
 3. **CV.** The CV for this track from `cv/SWAPS.md`. No swap suggestions unless the fit line names a gap a swap would close.

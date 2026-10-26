@@ -1,6 +1,6 @@
 # User guide
 
-This folder is a job application assistant that runs inside Claude Code. You give it a job link and it reads the ad, scores how well you fit, drafts your answers in your own voice, has a panel of reviewers check them, and fills the application form in Chrome. It never presses Submit until you type `submit`.
+This folder is a job application assistant that runs inside Claude Code. You give it a job link and it reads the ad, scores how well you fit, drafts your answers in your own voice, has a panel of reviewers check them, and fills the application form in Chrome. It never presses Submit until you say yes for that job.
 
 You don't need to know how to code. You type commands into Claude Code and reply to its questions in plain English. This guide covers how to use the workflow from start to finish. How each part works inside is already written in the `.md` files, and you can ask Claude about any of them.
 
@@ -9,7 +9,7 @@ You don't need to know how to code. You type commands into Claude Code and reply
 - A paid Claude plan (Pro or Max) and **Claude Code**: https://code.claude.com/docs/en/setup
 - **Google Chrome** with the **Claude in Chrome** extension (Chrome Web Store), for reading and filling forms
 - A **GitHub** account and **git**. On Windows, installing Git for Windows also gives you Git Bash, which the hooks need.
-- **Node.js** (https://nodejs.org), which runs the submit guard
+- **Node.js** (https://nodejs.org), optional: only needed for the old submit-guard hook, which is off by default
 - Python with `openpyxl` (`pip install -r requirements.txt`), for the applied-jobs spreadsheet
 
 ## 1. Get your own copy
@@ -37,7 +37,7 @@ Every file you need to fill in has `TODO` markers. Fill them in before your firs
 | `CLAUDE.md` | Your name, a few lines about you, and your tracks in priority order. Claude reads this at the start of every session. |
 | `config/criteria.md` | Your **tracks** (the kinds of job you want, e.g. engineering, consulting), job titles to search for, which job boards to use, locations, a company watchlist, and what to exclude. |
 | `answer-bank/facts.md` | The source of truth: dates, grades, numbers, what you're doing now, and claims to avoid. If it's not here or on your CV, Claude won't claim it. |
-| `config/profile.md` | Routine form fields (address, right to work, start date) and, if you want, your diversity answers. |
+| `config/profile.md` | Every routine form fact: contact, address, right to work, start date, dietary needs, declarations (convictions, disciplinary) and, if you want, your diversity answers. When a form asks something new, Claude asks you once and adds it here. |
 | `cv/` | Your CV as a PDF, plus a `.md` copy (ask Claude to make the `.md` from the PDF). One technical and one general CV work well. `cv/SWAPS.md` says which CV goes with which kind of job. |
 | `answer-bank/past-answers.md` | Paste in old application answers you're happy with. The more good ones, the more the drafts sound like you. |
 | `answer-bank/stories.md` | Your best stories (a project, a failure, a team moment) and which questions they answer. |
@@ -55,13 +55,13 @@ Every file you need to fill in has `TODO` markers. Fill them in before your firs
 ## The workflow
 
 ```
-  /find  ──►  tracker  ──►  /evaluate <link>  ──►  /draft <link>  ──►  you edit  ──►  /apply <link>  ──►  you type "submit"
+  /find  ──►  tracker  ──►  /evaluate <link>  ──►  /draft <link>  ──►  you edit  ──►  /apply <link>  ──►  you say "yes"
  (search)     (list of      (is it worth it?)      (answers +          answers.md      (fills the form,      (sent, logged,
                jobs)                                review panel)                       stops before          answers saved
                                                                                         Submit)               for next time)
 ```
 
-You can stop after any step and come back days later. Everything is saved in files, so the next command picks up where the last one stopped.
+You can stop after any step and come back days later. Everything is saved in files, so the next command picks up where the last one stopped. If a job already has its ad, fit score, questions or answers saved, Claude reuses them instead of redoing the work, and tells you which steps it skipped.
 
 ## The commands
 
@@ -85,7 +85,7 @@ Two other uses:
 **What happens:**
 1. Saves the full job ad (postings disappear) and scores fit.
 2. Picks which CV to use and may suggest a project to swap in. It never edits your CV; you make that change yourself.
-3. Opens the form and records every question, word limit and upload.
+3. Opens the form and records every question, word limit and upload. If it has to stop partway (a sign-in, or a question only you can answer), it saves what it has read and marks it partial. Next time it shows you what it's waiting on, then carries on from that page.
 4. Drafts your answers from your answer bank, in your voice.
 5. Three reviewers check the answers separately (an ATS keyword scan, a hiring manager and a technical interviewer). A chair combines them into a verdict (submit, revise or skip) and the three smallest edits that would help most. If the verdict is revise, it rewrites once.
 
@@ -98,8 +98,8 @@ Two other uses:
 1. Runs `/draft`, or picks up the draft if you've already made one.
 2. Shows you the answers and the review, and takes your edits. It asks "Are these the final answers?" and waits for your yes.
 3. Opens the form in Chrome, fills your details, pastes the approved answers exactly and uploads your CV.
-4. **Stops before Submit** and tells you what's filled and what's blank.
-5. You type `submit` and it presses Submit once. Anything else leaves the form unsent.
+4. **Stops before Submit**, tells you what's filled and what's blank, and asks you to check the tab.
+5. It asks "Submit <Company> — <Role> now? (yes / no)". Only a clear yes to that question presses Submit, once. Anything else leaves the form unsent.
 6. Marks the job `applied`, adds a row to `applications/applied.xlsx`, and saves your final answers to the answer bank so later drafts can reuse them.
 
 **Use it:** for jobs you really want, and for your first 20 or so applications while the answer bank fills up.
@@ -111,12 +111,13 @@ Two other uses:
 
 ## What stays with you
 
-These are built in as rules, and some are enforced by hooks:
+These are built in as rules:
 
-- **Submitting.** Nothing is sent unless you type `submit` for that specific job. A "submit guard" blocks submit clicks without it. Approving one job never carries over to another.
+- **Submitting.** Nothing is sent unless you say yes when Claude asks "Submit <Company> — <Role> now?" for that specific job. Approving one job never carries over to another.
 - **Logins, new accounts and CAPTCHAs.** Claude stops and asks you to do them, then carries on.
 - **LinkedIn.** No automation at all. Search and use Easy Apply there yourself. To track a LinkedIn job, run `/evaluate <link>`.
 - **Your CV file.** Claude suggests changes; you make them.
+- **Your details.** Forms are filled only from `config/profile.md`. Anything it doesn't cover, Claude asks you, then saves your answer there.
 - **Facts.** Claude never makes up a claim. If something isn't in `answer-bank/facts.md` or your CV, it writes `[CHECK: …]` and asks you.
 
 ## Everyday tips

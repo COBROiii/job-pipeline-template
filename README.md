@@ -1,6 +1,6 @@
 # Job application pipeline
 
-A job application assistant for Claude Code. It finds roles, scores how well you fit, drafts answers in your own voice from your past applications, has an independent panel review them, and fills the form in Chrome. It never submits without your explicit `submit`.
+A job application assistant for Claude Code. It finds roles, scores how well you fit, drafts answers in your own voice from your past applications, has an independent panel review them, and fills the form in Chrome. It never submits without your explicit yes.
 
 **New here? Start with [USER_GUIDE.md](USER_GUIDE.md):** setup, making it yours, and what each command does.
 
@@ -15,14 +15,14 @@ A job application assistant for Claude Code. It finds roles, scores how well you
                     review panel = ATS · hiring manager · technical interviewer (independent) ► chair:
                     submit / revise / skip + the 3 smallest edits (one revision round)
  /apply <link>      /draft (or picks up the saved draft) ► your edits ► fill form in Chrome ► stops before
-                    Submit ► you reply "submit" in Claude Code ► tracker, applied.xlsx, answer bank
+                    Submit ► "Submit <Company> now? (yes/no)" ► your yes ► tracker, applied.xlsx, answer bank
  /apply-lite <link> one-line fit, reuses tagged answer-bank answers, quick checklist, same fill/submit steps
  /evaluate          (blank) search-wide report + status
 ```
 
 The evaluator never writes answers, only judges them. Agents hand work over through files, so you can stop at any point and pick up later.
 
-**Submit guard:** `.claude/hooks/submit-guard.js` blocks any browser click, Enter key or script that looks like submit/apply/send/confirm/finish. To let one through, reply `submit` (or "yes, submit it") in Claude Code: that allows one submit within 10 minutes. A plain "yes" doesn't count. Test it with `node .claude/hooks/test/submit-guard.test.js`. It judges clicks by their description, so treat it as a safety net; the rule is still that nothing is submitted without your yes.
+**Submitting:** Claude fills the form, stops on the final page and asks "Submit <Company> — <Role> now? (yes / no)". Only an explicit yes to that question submits; anything else leaves it unsubmitted. (`.claude/hooks/submit-guard.js` is an older hook that blocked submit clicks unless you typed `submit`. It's kept but not connected; to use it, add it back to the `UserPromptSubmit` and `PreToolUse` hooks in `.claude/settings.json`.)
 
 ## Connect Chrome
 1. Start Claude Code with Chrome: `claude --chrome`

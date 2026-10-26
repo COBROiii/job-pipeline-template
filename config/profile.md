@@ -2,11 +2,14 @@
 
 Used to fill the routine parts of application forms. Fill in every TODO before first use. This file holds personal data, so keep your repo private.
 
+**Every personal fact a form asks for lives here.** Fill forms from this file. If a form asks something not covered, Claude asks you, then adds your answer here (with the date) before carrying on.
+
 | Field | Value |
 |---|---|
 | First name | TODO |
 | Last name | TODO |
 | Email | TODO |
+| University email | TODO |
 | Phone | TODO |
 | LinkedIn | TODO |
 | City | TODO |
@@ -19,11 +22,23 @@ Used to fill the routine parts of application forms. Fill in every TODO before f
 | Predicted classification | TODO |
 | Grades / transcript | TODO |
 | School qualifications | TODO |
+| School subjects and grades | TODO |
+| Secondary school | TODO (name, town, school type, years) |
 | Earliest start date | TODO |
 | Willing to relocate | TODO |
 | Notice period | TODO (e.g. N/A, student) |
 | Salary expectation | TODO |
 | How did you hear about us | Use the source the job came from; if a person referred you, ask |
+| Resident in the country you're applying in | TODO |
+| Proof of right to work | TODO (e.g. passport) |
+| Home address split | TODO (Line 1 · Line 2 · Town/City · Postcode) |
+| Dietary requirements | TODO |
+| Internal contact / referral at the employer | TODO (e.g. No, unless you say otherwise for a specific firm) |
+| Criminal convictions | TODO |
+| Professional body proceedings or complaints | TODO |
+| Investigations, censure, suspension or disciplinary action (professional, regulatory or academic) | TODO |
+| Reasonable adjustments in recruitment | TODO |
+| Sponsorship acknowledgement tickbox ("firm does not sponsor") | TODO |
 | Diversity / equal opportunities | See the section below |
 
 ## Diversity, equal opportunities and social mobility

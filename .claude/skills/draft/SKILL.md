@@ -14,7 +14,7 @@ For each link, in order:
 
 ## 1. Job ad and fit
 - Find the job in `applications/tracker.md` (same link, or same company + title + location). If none, add a row (status `found`). Job ID = `company-role`, lowercase, hyphens, ~40 chars.
-- If `applications/jobs/<id>/answers.md` already exists, say so and skip to whatever step is not done yet (no `review.md` → step 5).
+- **Check local files first; never redo a step whose file exists.** The repo (just pulled) is the store. In `applications/jobs/<id>/`: `posting.md` → don't re-read the ad · `fit.md` → don't re-run fit · `questions.md` with `Status: COMPLETE` → skip step 3 · `answers.md` → skip to step 5 (or past it if `review.md` exists). Say which steps you're skipping and why. Redo one only if the user asks or the file says it's stale.
 - Read the ad (WebFetch; Chrome only if it needs JavaScript) and save the full text, dates and URL to `applications/jobs/<id>/posting.md`. Postings disappear, so capture all of it.
 - Run `evaluator` mode `fit` for this ID. **Thresholds (fit /100):** 75+ (A) → suggest `/apply`. 60–74 → suggest `/apply-lite`. **Under 60 → heavy warning, never a block:** tell the user "⚠ Fit <n>/100 is below your 60 minimum: <reason>. Roles this weak rarely reach interview and cost the same usage. Apply anyway? (yes / no)" and wait. Same warning for any hard ineligibility (wrong graduation year, experience bar). On yes, carry on and note "applied below fit minimum" in Notes.
 
@@ -23,6 +23,7 @@ Pick the CV for this job's track from `cv/SWAPS.md` and write it in the tracker'
 
 ## 3. Questions
 - If the user pasted the questions, save them to `questions.md` and skip the browser.
+- If `questions.md` exists with `Status: PARTIAL` or `BLOCKED`, show the user what it's waiting on (its `ASK USER` items and the blocker) before opening Chrome. Once they answer, run `form-reader` in **resume** mode: "Resume <id>: questions.md already covers <steps>; start at <first unread step> and add to the file, don't rewrite it."
 - Otherwise run `form-reader` for this ID and link. Run form-readers one at a time (one Chrome window). If it returns `blocked` (login wall, CAPTCHA), tell the user what to do and move to the next link.
 - Set status `scouted`.
 

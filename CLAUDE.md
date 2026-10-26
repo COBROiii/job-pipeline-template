@@ -16,13 +16,13 @@ Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/ev
 - Agents: job-seeker, form-reader (Haiku), answer-optimiser, evaluator
 
 ## Rules
-1. **Nothing is submitted without the user's explicit yes** for that specific job, in this session. They approve by replying `submit` in Claude Code; the submit-guard hook blocks submit clicks without that. Never work around the hook. Approval never carries to another job.
+1. **Nothing is submitted without the user's explicit yes** for that specific job, in this session. Ask "Submit <Company> — <Role> now? (yes / no)"; only an explicit yes to that question counts. Approval never carries to another job.
 2. **Logins, account creation and CAPTCHAs are the user's.** Pause and ask.
 3. **No LinkedIn automation:** no Easy Apply, no searching or mass actions. The user uses LinkedIn themselves.
 4. **Never invent facts.** Every claim traces to `answer-bank/` or the CV; otherwise write `[CHECK: …]` and ask.
 5. **Only the CVs listed in `cv/SWAPS.md`.** Suggest project swaps from `answer-bank/cv-points.md`; never edit or generate CV files.
 6. CV edits: as few as possible, keep the user's phrasing, one line per bullet (~110 characters max). Spelling as set in `answer-bank/README.md`.
-7. Don't type free-text answers into a form until the user has approved `answers.md`. Fill diversity questions from `config/profile.md`; ask about anything it doesn't cover.
+7. Don't type free-text answers into a form until the user has approved `answers.md`. Every personal/form fact (contact, address, eligibility, diversity, dietary, character declarations…) comes from `config/profile.md`. Check it before asking. If it isn't there, ask the user, then add their answer to `profile.md` straight away.
 8. **Cover letters:** draft text in answers.md. Upload only as a PDF the user has formatted from their cover letter template (<TODO: e.g. a FlowCV or Google Docs template>). Never paste raw text into an upload slot.
 9. **Story, not list:** every answer and cover letter follows `.claude/skills/story-flow/SKILL.md`.
 10. Never make any claim listed under "Claims to avoid" in `answer-bank/facts.md`.
