@@ -4,6 +4,8 @@ This folder is a job application assistant that runs inside Claude Code. You giv
 
 You don't need to know how to code. You type commands into Claude Code and reply to its questions in plain English. This guide covers how to use the workflow from start to finish. How each part works inside is already written in the `.md` files, and you can ask Claude about any of them.
 
+**On a Mac?** Follow [USER_GUIDE_MAC.md](USER_GUIDE_MAC.md) for setup, then come back here from "The workflow".
+
 ## What you need
 
 - A paid Claude plan (Pro or Max) and **Claude Code**: https://code.claude.com/docs/en/setup

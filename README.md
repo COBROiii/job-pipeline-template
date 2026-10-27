@@ -2,7 +2,7 @@
 
 A job application assistant for Claude Code. It finds roles, scores how well you fit, drafts answers in your own voice from your past applications, has an independent panel review them, and fills the form in Chrome. It never submits without your explicit yes.
 
-**New here? Start with [USER_GUIDE.md](USER_GUIDE.md):** setup, making it yours, and what each command does.
+**New here? Start with [USER_GUIDE.md](USER_GUIDE.md):** setup, making it yours, and what each command does. On a Mac, set up with [USER_GUIDE_MAC.md](USER_GUIDE_MAC.md) first.
 
 > **Keep your copy private.** Once you fill it in, it holds your CV, contact details, diversity answers and every application you write.
 
