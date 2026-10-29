@@ -16,6 +16,10 @@ For each link, in order:
 - Find the job in `applications/tracker.md` (same link, or same company + title + location). If none, add a row (status `found`). Job ID = `company-role`, lowercase, hyphens, ~40 chars.
 - **Check local files first; never redo a step whose file exists.** The repo (just pulled) is the store. In `applications/jobs/<id>/`: `posting.md` → don't re-read the ad · `fit.md` → don't re-run fit · `questions.md` with `Status: COMPLETE` → skip step 3 · `answers.md` → skip to step 5 (or past it if `review.md` exists). Say which steps you're skipping and why. Redo one only if the user asks or the file says it's stale.
 - Read the ad (WebFetch; Chrome only if it needs JavaScript) and save the full text, dates and URL to `applications/jobs/<id>/posting.md`. Postings disappear, so capture all of it.
+- **Still open?** Judge the page you just fetched before scoring (no extra fetch):
+  - **Closed** needs clear evidence: "applications have closed", "no longer accepting applications", "this vacancy has closed", "position has been filled", "closed on <past date>", a deadline already passed, a 404, or a redirect to a generic careers page. Stop this job: tracker status `skipped`, Notes "closed (seen <date>)", one line in `log.md`, then the next link.
+  - **Inconclusive** is everything else: empty or JavaScript-only page, 403, or the role simply not listed. Never treat it as closed: try the employer's own page once, then say so and carry on.
+  - "May close early" / "once filled": add "apply early" to Notes; it is still open.
 - Run `evaluator` mode `fit` for this ID. **Thresholds (fit /100):** 75+ (A) → suggest `/apply`. 60–74 → suggest `/apply-lite`. **Under 60 → heavy warning, never a block:** tell the user "⚠ Fit <n>/100 is below your 60 minimum: <reason>. Roles this weak rarely reach interview and cost the same usage. Apply anyway? (yes / no)" and wait. Same warning for any hard ineligibility (wrong graduation year, experience bar). On yes, carry on and note "applied below fit minimum" in Notes.
 
 ## 2. CV
@@ -28,14 +32,14 @@ Pick the CV for this job's track from `cv/SWAPS.md` and write it in the tracker'
 - Set status `scouted`.
 
 ## 4. Draft
-Run `answer-optimiser` for this ID. Status `drafted`.
+Run `answer-optimiser` for this ID with `model` opus if fit ≥ 80, else sonnet (CLAUDE.md rule 11). Status `drafted`.
 
 ## 5. Review panel
-1. Run three `evaluator` subagents **at the same time**, modes `review ats <id>`, `review hiring-manager <id>`, `review technical <id>`.
-2. Then `evaluator` mode `chair <id>`.
-3. If the verdict is `revise`, send it back to `answer-optimiser` once ("Revise answers.md using review.md: fix every hard fail and apply the 3 edits; keep everything else") and run `chair <id>` again. One revision only; after that the user decides.
+1. Run three `evaluator` subagents (model sonnet) **at the same time**, modes `review ats <id>`, `review hiring-manager <id>`, `review technical <id>`.
+2. Then `evaluator` mode `chair <id>` (model opus).
+3. If the verdict is `revise`, send it back to `answer-optimiser` once on opus ("Revise answers.md using review.md: fix every hard fail and apply the 3 edits; keep everything else") and run `chair <id>` again. One revision only; after that the user decides.
 
 ## Report
 Per job: fit score, verdict and score, hard fails left, the 3 edits, CV + swap suggestion, any `[CHECK: …]`, and the path `applications/jobs/<id>/answers.md`. Tell them `/apply <link>` picks this draft up.
 
-End: commit and push (`draft: <short summary>`), then "Mode done. Run /clear before starting the next one."
+End: commit and push (`draft: <short summary>`), then "Mode done." (see CLAUDE.md rule 15 on /clear)

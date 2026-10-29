@@ -50,7 +50,7 @@ Every file you need to fill in has `TODO` markers. Fill them in before your firs
 
 ## 3. Check it works
 
-- Type `/agents`. You should see `job-seeker`, `form-reader`, `answer-optimiser` and `evaluator`.
+- Type `/agents`. You should see `job-seeker`, `form-reader`, `form-filler`, `answer-optimiser` and `evaluator`.
 - Type `/evaluate` with nothing after it. It should read your (empty) tracker and report.
 - For anything that needs Chrome, start Claude Code with `claude --chrome`, then type `/chrome` and check it says Enabled. Sign in to job sites in Chrome yourself first.
 
@@ -99,7 +99,7 @@ Two other uses:
 **What happens:**
 1. Runs `/draft`, or picks up the draft if you've already made one.
 2. Shows you the answers and the review, and takes your edits. It asks "Are these the final answers?" and waits for your yes.
-3. Opens the form in Chrome, fills your details, pastes the approved answers exactly and uploads your CV.
+3. If a cover letter is needed (always for fit 80+), asks whether Claude should make the PDF from your cover letter template, then the `form-filler` agent opens the form in Chrome, fills your details, pastes the approved answers exactly and uploads your CV (and cover letter).
 4. **Stops before Submit**, tells you what's filled and what's blank, and asks you to check the tab.
 5. It asks "Submit <Company> — <Role> now? (yes / no)". Only a clear yes to that question presses Submit, once. Anything else leaves the form unsent.
 6. Marks the job `applied`, adds a row to `applications/applied.xlsx`, and saves your final answers to the answer bank so later drafts can reuse them.
@@ -111,6 +111,11 @@ Two other uses:
 **What happens:** the same fill-and-submit steps as `/apply`, but much cheaper. It reuses your closest saved answer for each question, changes only the company-specific parts, and runs a quick checklist instead of the review panel. If a question has no good match it offers to switch to `/apply`.
 **Use it:** for high-volume roles, or when you're low on usage. It works best once your answer bank has two or more saved answers for each common question (the tracker header counts them for you).
 
+### `/outcome` — record a rejection
+**Type:** `/outcome <company or id> [reason or feedback]`
+**What happens:** marks the job `rejected` in the tracker, adds a dated line to its `log.md` and fills Status and Rejection Reason in `applications/applied.xlsx`. The reason is saved word for word. Tests and interviews aren't tracked; those jobs stay `applied`.
+**On its own:** `/outcome` checks your Gmail for rejections (if the Gmail connector is on) and lists them with the line that shows each. Nothing is written until you pick the numbers, and it never replies to, archives or labels an email.
+
 ## What stays with you
 
 These are built in as rules:
@@ -119,12 +124,12 @@ These are built in as rules:
 - **Logins, new accounts and CAPTCHAs.** Claude stops and asks you to do them, then carries on.
 - **LinkedIn.** No automation at all. Search and use Easy Apply there yourself. To track a LinkedIn job, run `/evaluate <link>`.
 - **Your CV file.** Claude suggests changes; you make them.
-- **Your details.** Forms are filled only from `config/profile.md`. Anything it doesn't cover, Claude asks you, then saves your answer there.
+- **Your details.** Forms are filled only from `config/profile.md`. For routine gaps (title, a grade dropdown) Claude picks the obvious answer and lists its assumptions afterwards; anything else (eligibility, diversity, declarations, salary) it asks you, then saves your answer there.
 - **Facts.** Claude never makes up a claim. If something isn't in `answer-bank/facts.md` or your CV, it writes `[CHECK: …]` and asks you.
 
 ## Everyday tips
 
-- **Type `/clear` between commands.** Each command ends with a reminder. A fresh start keeps Claude focused and uses less of your allowance.
+- **Type `/clear` when Claude suggests it** (context over 200k after a job, or a hard stop at 300k). A fresh start keeps Claude focused and uses less of your allowance.
 - **Only open Chrome when you need it.** Plain `claude` is enough for `/find`, `/evaluate` and `/draft` when you paste the questions. Use `claude --chrome` for reading or filling forms.
 - **Batch.** Draft several jobs, then fill them all in one Chrome session: `/apply <link1> <link2> …`
 - **Keep facts current.** New grade, new role, new project? Update `answer-bank/facts.md` first. It overrides older answers.
@@ -134,7 +139,7 @@ These are built in as rules:
 
 | Where | What |
 |---|---|
-| `applications/tracker.md` | Every job, one row each, with its stage: `found` → `scouted` → `drafted` → `ready` → `applied` (or `skipped` / `blocked`) |
+| `applications/tracker.md` | Every job, one row each, with its stage: `found` → `scouted` → `drafted` → `ready` → `applied` → `rejected` (or `skipped` / `blocked`) |
 | `applications/jobs/<id>/` | One folder per job: the saved ad, questions, fit score, answers, review and a log |
 | `applications/applied.xlsx` | Submitted applications only, one sheet per track |
 | `answer-bank/` | Everything Claude writes from. Read `answer-bank/README.md` first. |

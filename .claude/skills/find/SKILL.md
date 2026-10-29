@@ -13,4 +13,4 @@ Follow the rules in `CLAUDE.md`. Run `git pull --rebase` first; if it conflicts,
 1. Run `job-seeker`: "Search per config/criteria.md (titles and sources there; track: <track or all>). Dedupe against applications/tracker.md by company + title + location. Add new rows with link, deadline, source, track and status `found`. No LinkedIn."
 2. End with a short table of the new roles: company · role · location · deadline · one-line fit guess. Flag anything closing within 14 days. Don't draft anything. Suggest `/evaluate <link>` for a proper score or `/draft` / `/apply` for the ones they want.
 
-End: commit and push (`find: <n> new roles`), then "Mode done. Run /clear before starting the next one."
+End: commit and push (`find: <n> new roles`), then "Mode done." (see CLAUDE.md rule 15 on /clear)

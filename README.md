@@ -17,6 +17,7 @@ A job application assistant for Claude Code. It finds roles, scores how well you
  /apply <link>      /draft (or picks up the saved draft) ► your edits ► fill form in Chrome ► stops before
                     Submit ► "Submit <Company> now? (yes/no)" ► your yes ► tracker, applied.xlsx, answer bank
  /apply-lite <link> one-line fit, reuses tagged answer-bank answers, quick checklist, same fill/submit steps
+ /outcome <co> [reason]  records a rejection + reason ► tracker, log.md, applied.xlsx (blank: finds them in Gmail)
  /evaluate          (blank) search-wide report + status
 ```
 
@@ -39,7 +40,7 @@ The evaluator never writes answers, only judges them. Agents hand work over thro
 ## Which command, and keeping usage down
 - Use `/apply` for your first ~20 applications to build up the answer bank. After that, `/apply` for roles you really want or unusual questions, and `/apply-lite` for mass-apply roles or when usage is short. The tracker header counts tagged answers per question type; `/apply` tells you when each has 2+, which means lite is ready.
 - Start plain `claude` for `/find` and `/evaluate`, and for `/draft` when you paste the questions in. Start `claude --chrome` only when a form has to be read or filled, because browser tools add to every message while they're on.
-- Run `/clear` between applications.
+- Run `/clear` when Claude says the session is long (200k soft / 300k hard limit).
 - Batch: draft several first, then fill them all in one Chrome session (`/apply <link1> <link2> …` picks up the drafts).
 - LinkedIn is manual only: search and Easy Apply there yourself, then add the job with `/evaluate <link>` if you want it tracked.
 

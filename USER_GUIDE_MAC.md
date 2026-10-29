@@ -88,11 +88,11 @@ From now on, to start a session: open Terminal, run `cd ~/Documents/job-pipeline
 
 ## 3. Check it works
 
-- `/agents` should list `job-seeker`, `form-reader`, `answer-optimiser` and `evaluator`.
+- `/agents` should list `job-seeker`, `form-reader`, `form-filler`, `answer-optimiser` and `evaluator`.
 - `/evaluate` with nothing after it should read your empty tracker and report.
 - Quit with `/exit`, start again with `claude --chrome`, then type `/chrome`: it should say Status: Enabled, Extension: Installed. Sign in to job sites in Chrome yourself. Claude uses your existing sign-ins.
 
-The hooks (pull at start, push at end, the `/clear` reminder) run with the `bash` that comes with macOS, so there's nothing extra to install for them.
+The hooks (pull at start, push at end, the context check that suggests `/clear`) run with the `bash` that comes with macOS, so there's nothing extra to install for them.
 
 Then fill in your details: see "Make it yours" in [USER_GUIDE.md](USER_GUIDE.md#2-make-it-yours).
 
