@@ -69,7 +69,7 @@ You can stop after any step and come back days later. Everything is saved in fil
 
 ### `/find` — look for jobs
 **Type:** `/find` or `/find <track>` (your track IDs from `config/criteria.md`)
-**What happens:** searches the graduate job boards in `config/criteria.md` and adds new roles to `applications/tracker.md`. It skips jobs already on the list and never touches LinkedIn.
+**What happens:** searches the graduate job boards in `config/criteria.md` and adds new roles to `applications/tracker.md`. It skips jobs already on the list, starting with LinkedIn (read-only: it never clicks Easy Apply, Apply, Save or Message).
 **You get:** a short table of new roles with deadlines and a rough fit guess. Anything closing within two weeks is flagged.
 **Use it:** at the start of a week, or when the tracker is running low.
 
@@ -122,7 +122,7 @@ These are built in as rules:
 
 - **Submitting.** Nothing is sent unless you say yes when Claude asks "Submit <Company> — <Role> now?" for that specific job. Approving one job never carries over to another.
 - **Logins, new accounts and CAPTCHAs.** Claude stops and asks you to do them, then carries on.
-- **LinkedIn.** No automation at all. Search and use Easy Apply there yourself. To track a LinkedIn job, run `/evaluate <link>`.
+- **LinkedIn.** Read-only: Claude searches and reads postings (source #1) but never clicks Easy Apply, Apply, Save or Message. Easy Apply submissions are yours.
 - **Your CV file.** Claude suggests changes; you make them.
 - **Your details.** Forms are filled only from `config/profile.md`. For routine gaps (title, a grade dropdown) Claude picks the obvious answer and lists its assumptions afterwards; anything else (eligibility, diversity, declarations, salary) it asks you, then saves your answer there.
 - **Facts.** Claude never makes up a claim. If something isn't in `answer-bank/facts.md` or your CV, it writes `[CHECK: …]` and asks you.

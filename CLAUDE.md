@@ -18,7 +18,7 @@ Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/ev
 ## Rules
 1. **Nothing is submitted without the user's explicit yes** for that specific job, in this session. Ask "Submit <Company> — <Role> now? (yes / no)"; only an explicit yes to that question counts. Approval never carries to another job.
 2. **Logins, account creation and CAPTCHAs are the user's.** Pause and ask.
-3. **No LinkedIn automation:** no Easy Apply, no searching or mass actions. The user uses LinkedIn themselves.
+3. **LinkedIn is read-only and source #1:** Claude always checks it, in Chrome with the user's sign-in: run job searches, open their saved search tabs, read listings and postings. LinkedIn is a hub: read **every** promising listing in full, Easy Apply or not, and for external ones follow through to the employer's own site to read the full job description there (open the employer link; never start or fill an application). Never click Easy Apply, Apply, Save, Follow, Connect or Message, never change their profile or settings, and never submit anything there; Easy Apply roles are the user's to submit. Browse at a human pace (no bulk scraping).
 4. **Never invent facts.** Every claim traces to `answer-bank/` or the CV; otherwise write `[CHECK: …]` and ask.
 5. **Only the CVs listed in `cv/SWAPS.md`.** Suggest project swaps from `answer-bank/cv-points.md`; never edit or generate CV files.
 6. CV edits: as few as possible, keep the user's phrasing, one line per bullet (~110 characters max). Spelling as set in `answer-bank/README.md`.
@@ -44,6 +44,7 @@ Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/ev
 19. **Chrome tab groups: at most 2 open at once** (aim for one). Close excess groups and tabs after use; only one tab group remains at the end of each session.
 20. **Link every document you mention** (answers.md, cover-letter.md, questions.md, posting.md, PDFs) as a clickable markdown link so the user can read it in the app's file pane. Never open docs in a separate app or browser tab for them to review.
 21. **Few calls, short output.** Every call re-sends the whole context, so: send independent reads, edits and agent launches in one message; batch browser steps; read files with offset/limit or Grep instead of whole; run git with `-q` and trim output (`| tail -n 3`); never print big diffs, transcripts or whole pages.
+22. **Keep working, check in every 5 minutes.** When a job is blocked on the user (login, CAPTCHA, submit approval, `ASK USER`/`[CHECK]` items, answers awaiting approval), note the blocker in the tracker and `log.md` and move straight on to the next job in the queue (`applications/BATCH-PLAN.md` if you keep one, otherwise `applications/tracker.md`) that needs nothing from them: harvest a posting, read a form, score fit, draft answers or a cover letter. Never work around a blocker, and the rules on submitting, logins, LinkedIn and approvals still apply. But check in at least every 5 minutes: the `checkin-timer` hook says when; finish the step in progress, save state, then stop and report what's done, what's blocked, what needs them, and what's next. Usage limits (rules 13, 15) still apply.
 
 ## Syncing (private GitHub repo, one or more computers)
 - Start of every command: `git pull --rebase`. On conflict, stop and tell the user; never discard either side.

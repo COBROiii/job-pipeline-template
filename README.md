@@ -42,7 +42,7 @@ The evaluator never writes answers, only judges them. Agents hand work over thro
 - Start plain `claude` for `/find` and `/evaluate`, and for `/draft` when you paste the questions in. Start `claude --chrome` only when a form has to be read or filled, because browser tools add to every message while they're on.
 - Run `/clear` when Claude says the session is long (200k soft / 300k hard limit).
 - Batch: draft several first, then fill them all in one Chrome session (`/apply <link1> <link2> …` picks up the drafts).
-- LinkedIn is manual only: search and Easy Apply there yourself, then add the job with `/evaluate <link>` if you want it tracked.
+- LinkedIn is read-only for Claude: it searches and reads postings, but Easy Apply and any submission there are yours.
 
 ## Troubleshooting
 | Problem | Fix |

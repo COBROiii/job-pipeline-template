@@ -22,7 +22,7 @@ Browser work runs in the `form-filler` agent so screenshots and page text stay o
 1. Run `evaluator` mode `final <id>`. If it isn't `clear`, show the problems and stop.
 2. Cover letter (CLAUDE.md rule 8): if one is needed and the user agrees for this job, run `form-filler` mode `pdf <id>`, then move the downloaded PDF to `applications/jobs/<id>/cover-letter.pdf`.
 3. Run `form-filler` mode `fill <id> <link>` (say whether to upload the cover-letter PDF). It fills from answers.md and profile.md, uploads, and stops before Submit.
-4. If it returns a question not covered by answers.md or profile.md, or a blocker (sign-in, CAPTCHA), ask the user, then rerun `fill` to continue; it resumes from `log.md`.
+4. If it returns a question not covered by answers.md or profile.md, or a blocker (sign-in, CAPTCHA), log it, add it to the list for the user, and move on to the next link (CLAUDE.md rule 22). Raise it at the next check-in; once they answer, rerun `fill` to continue; it resumes from `log.md`.
 5. **Stop before Submit.** Tell the user what's filled and what's blank, and ask them to check the tab. Then ask: **"Submit <Company> — <Role> now? (yes / no)"**
 6. Only an explicit yes in reply to that question counts: run `form-filler` mode `submit <id>` quoting their yes. Anything else leaves it unsubmitted.
 

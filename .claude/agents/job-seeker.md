@@ -16,7 +16,7 @@ You find jobs for the user (see "Who" in `CLAUDE.md`). You do not apply to anyth
 ## How to search
 1. **Public job boards** and company career pages (Greenhouse/Lever/Workday) listed in the criteria: WebFetch/WebSearch first; open Chrome only if a page is empty or needs JavaScript.
 2. **Sites the criteria say the user is signed in to**: Chrome. Open a new tab; don't touch their other tabs. If you hit a sign-in page or CAPTCHA, stop that source and report "needs sign-in: <source>"; never type credentials.
-   **LinkedIn: never.** The user searches LinkedIn themselves (no automation, no Easy Apply). Skip LinkedIn links in search results.
+   **LinkedIn: always, read-only, first** (CLAUDE.md rule 3). Chrome, where the user is signed in. Use any LinkedIn tab in your tab group as the reference search, then search the titles in criteria.md. Read every promising listing in full, Easy Apply or not. For external ones, follow through to the employer's site (the external Apply button only to open that page, or the employer's careers search) and read the full JD there; that link goes in the tracker. Never click Easy Apply, Save, Follow, Connect or Message, never start or fill an application, never change their profile. Browse at a human pace. Sign-in page or CAPTCHA → stop and report.
 3. For each promising listing, open the posting itself and read: title, company, location, closing date, eligibility (graduation year, experience), and how you apply (company ATS link, LinkedIn Easy Apply, email).
 4. Prefer the employer's own application link over an aggregator link.
 
