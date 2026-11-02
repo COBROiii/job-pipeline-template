@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# UserPromptSubmit + PostToolUse: make the main session check in with the user at least every 5 minutes.
+# UserPromptSubmit + PostToolUse: make the main session check in with the user at least every 5 minutes. Answering an AskUserQuestion also restarts the clock.
 #   UserPromptSubmit: The user has just spoken, so restart the clock.
 #   PostToolUse: once 5 minutes have passed, tell Claude to finish the current step and stop with a check-in
 #   (repeats every minute until the turn ends). Subagent tool calls are ignored; their parent turn is timed.
@@ -20,7 +20,8 @@ state="$dir/checkin-$session"
 now=$(date +%s)
 
 # State file holds "<turn start> <last warning>".
-if [ "$event" = "UserPromptSubmit" ] || [ ! -f "$state" ]; then
+# Answering an AskUserQuestion is the user checking in too.
+if [ "$event" = "UserPromptSubmit" ] || [ "$(field tool_name)" = "AskUserQuestion" ] || [ ! -f "$state" ]; then
   echo "$now 0" > "$state"
   exit 0
 fi

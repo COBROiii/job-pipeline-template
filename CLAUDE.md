@@ -1,6 +1,6 @@
 # Job application pipeline — <Your Name>
 
-Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/evaluate`, `/draft`, `/apply`, `/apply-lite`, `/outcome` (see `USER_GUIDE.md`).
+Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/evaluate`, `/draft`, `/apply`, `/apply-lite`, `/outcome` (see `USER_GUIDE.md`). `/outreach` finds people at target companies and drafts messages.
 
 ## Who
 <TODO: two or three lines about yourself. e.g. "Alex Smith: final-year MEng Mechanical Engineering at the University of X, graduating 2027; previously a summer intern at Y. London-based, UK national.">
@@ -13,12 +13,13 @@ Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/ev
 - `config/criteria.md` (tracks, search titles, sources, exclusions) · `config/profile.md` (form fields, diversity answers)
 - `applications/tracker.md` (one row per job) · `applications/jobs/<id>/` (posting, questions, fit, answers, review, log) · `applications/applied.xlsx` (submitted only, one sheet per track)
 - `answer-bank/` (read its README first) · `cv/SWAPS.md` · `documents/` (transcript and other uploads)
-- Agents: job-seeker, form-reader (Haiku), form-filler (fills forms in Chrome, stops before Submit), answer-optimiser, evaluator
+- Agents: job-seeker, form-reader (Haiku), form-filler (fills forms in Chrome, stops before Submit), answer-optimiser, evaluator, outreach (finds people, drafts messages)
+- `applications/contacts.md` (outreach contacts) · `answer-bank/outreach.md` (message templates)
 
 ## Rules
 1. **Nothing is submitted without the user's explicit yes** for that specific job, in this session. Ask "Submit <Company> — <Role> now? (yes / no)"; only an explicit yes to that question counts. Approval never carries to another job.
 2. **Logins, account creation and CAPTCHAs are the user's.** Pause and ask.
-3. **LinkedIn is read-only and source #1:** Claude always checks it, in Chrome with the user's sign-in: run job searches, open their saved search tabs, read listings and postings. LinkedIn is a hub: read **every** promising listing in full, Easy Apply or not, and for external ones follow through to the employer's own site to read the full job description there (open the employer link; never start or fill an application). Never click Easy Apply, Apply, Save, Follow, Connect or Message, never change their profile or settings, and never submit anything there; Easy Apply roles are the user's to submit. Browse at a human pace (no bulk scraping).
+3. **LinkedIn is read-only and source #1:** Claude always checks it, in Chrome with the user's sign-in: run job searches, open their saved search tabs, read listings and postings. LinkedIn is a hub: read **every** promising listing in full, Easy Apply or not, and for external ones follow through to the employer's own site to read the full job description there (open the employer link; never start or fill an application). Never click Easy Apply, Apply, Save, Follow, Connect or Message, never change their profile or settings, and never submit anything there; Easy Apply roles are the user's to submit. Browse at a human pace (no bulk scraping). For `/outreach`, Claude may also search for people and read their profiles, under the same limits.
 4. **Never invent facts.** Every claim traces to `answer-bank/` or the CV; otherwise write `[CHECK: …]` and ask.
 5. **Only the CVs listed in `cv/SWAPS.md`.** Suggest project swaps from `answer-bank/cv-points.md`; never edit or generate CV files.
 6. CV edits: as few as possible, keep the user's phrasing, one line per bullet (~110 characters max). Spelling as set in `answer-bank/README.md`.
@@ -28,7 +29,7 @@ Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/ev
 10. Never make any claim listed under "Claims to avoid" in `answer-bank/facts.md`.
 11. **Models.** The session runs on Sonnet: the user picks it in the app's model picker (a session can't change its own model; command `model:` lines only last for that command's turn). Claude routes work to agents and **always passes `model` on every Agent call** (it overrides the agent file; agents left unset copy the session's model):
    - **haiku:** form-reader; mechanical bookkeeping.
-   - **sonnet:** job-seeker, form-filler, evaluator `fit` / `quick` / `final` / review panel, answer-optimiser for fit < 80 and apply-lite, Explore / general-purpose searches.
+   - **sonnet:** job-seeker, form-filler, outreach, evaluator `fit` / `quick` / `final` / review panel, answer-optimiser for fit < 80 and apply-lite, Explore / general-purpose searches.
    - **opus:** answer-optimiser and cover letters for fit ≥ 80, evaluator `chair`, and the one revision after a `revise` verdict.
    - Pipeline design, debugging or usage analysis (like changing these rules): say "this would go better on Opus, switch the model picker?" and let the user decide.
    - Each `log.md` drafting line records `model: <x>, chair <score>, user edits: none/few/many`. After 10 applications, compare Sonnet and Opus drafts and propose changes to this table.
@@ -45,6 +46,7 @@ Job applications for <TODO: e.g. a 2027 graduate start>. Commands: `/find`, `/ev
 20. **Link every document you mention** (answers.md, cover-letter.md, questions.md, posting.md, PDFs) as a clickable markdown link so the user can read it in the app's file pane. Never open docs in a separate app or browser tab for them to review.
 21. **Few calls, short output.** Every call re-sends the whole context, so: send independent reads, edits and agent launches in one message; batch browser steps; read files with offset/limit or Grep instead of whole; run git with `-q` and trim output (`| tail -n 3`); never print big diffs, transcripts or whole pages.
 22. **Keep working, check in every 5 minutes.** When a job is blocked on the user (login, CAPTCHA, submit approval, `ASK USER`/`[CHECK]` items, answers awaiting approval), note the blocker in the tracker and `log.md` and move straight on to the next job in the queue (`applications/BATCH-PLAN.md` if you keep one, otherwise `applications/tracker.md`) that needs nothing from them: harvest a posting, read a form, score fit, draft answers or a cover letter. Never work around a blocker, and the rules on submitting, logins, LinkedIn and approvals still apply. But check in at least every 5 minutes: the `checkin-timer` hook says when; finish the step in progress, save state, then stop and report what's done, what's blocked, what needs them, and what's next. Usage limits (rules 13, 15) still apply.
+23. **Outreach:** `/outreach` finds 2–3 people per company: the user's own network first, then people already doing the role (alumni of their university, recent grads), then people in the team and recruiters at about 2:1; small companies by email first, large by LinkedIn, and drafts messages from `answer-bank/outreach.md`. **The user sends every message themselves**; Claude never clicks Connect, Message or Follow and never sends email. The first message mentions the role and asks for a quick chat; a referral is asked for only after a call. One follow-up at most. About 10 new people a week. Work emails only: use a pattern shown on the company's own site, or mark a guess as unverified; no email-finder sites or personal contact details. Log everyone in `applications/contacts.md`.
 
 ## Syncing (private GitHub repo, one or more computers)
 - Start of every command: `git pull --rebase`. On conflict, stop and tell the user; never discard either side.

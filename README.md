@@ -18,6 +18,7 @@ A job application assistant for Claude Code. It finds roles, scores how well you
                     Submit ► "Submit <Company> now? (yes/no)" ► your yes ► tracker, applied.xlsx, answer bank
  /apply-lite <link> one-line fit, reuses tagged answer-bank answers, quick checklist, same fill/submit steps
  /outcome <co> [reason]  records a rejection + reason ► tracker, log.md, applied.xlsx (blank: finds them in Gmail)
+ /outreach <co>          finds 2-3 people (LinkedIn read-only, company site) + drafts messages you send ► contacts.md
  /evaluate          (blank) search-wide report + status
 ```
 
